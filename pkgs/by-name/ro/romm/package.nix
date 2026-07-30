@@ -5,6 +5,7 @@
   buildNpmPackage,
   makeWrapper,
   nix-update-script,
+  nixosTests,
   p7zip,
   python3,
   runtimeShell,
@@ -161,6 +162,9 @@ stdenvNoCC.mkDerivation {
 
   passthru = {
     inherit frontend pythonEnv;
+    tests = {
+      inherit (nixosTests) romm;
+    };
     updateScript = nix-update-script { };
   };
 
