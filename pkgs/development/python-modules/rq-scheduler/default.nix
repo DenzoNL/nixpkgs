@@ -1,0 +1,43 @@
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  setuptools,
+  freezegun,
+  parse-crontab,
+  python-dateutil,
+  rq,
+}:
+
+buildPythonPackage rec {
+  pname = "rq-scheduler";
+  version = "0.14.0";
+  pyproject = true;
+
+  src = fetchPypi {
+    inherit pname version;
+    hash = "sha256-LVoUoashf4aTGE66of4Dg47cvHC092VychwLMwWM0CM=";
+  };
+
+  build-system = [ setuptools ];
+
+  dependencies = [
+    freezegun
+    parse-crontab
+    python-dateutil
+    rq
+  ];
+
+  # tests require a running Redis server
+  doCheck = false;
+
+  pythonImportsCheck = [ "rq_scheduler" ];
+
+  meta = {
+    description = "Job scheduling capabilities for RQ (Redis Queue)";
+    homepage = "https://github.com/rq/rq-scheduler";
+    changelog = "https://github.com/rq/rq-scheduler/releases/tag/v${lib.versions.majorMinor version}";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ denzonl ];
+  };
+}
